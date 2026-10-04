@@ -1,4 +1,4 @@
-name: TEST Full CI
+name: CI
 run-name: >-
   ${{ github.event_name == 'pull_request' && github.event.label.name == 'ci:full' && format('Full CI #{0} @{1} on {2}', github.event.pull_request.number, github.event.pull_request.head.sha, github.event.pull_request.base.sha) || 'Unrequested label' }}
 on:
@@ -15,9 +15,29 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - run: sleep 60
+      - run: sleep 15
   check:
     name: ${{ github.event.label.name == 'ci:full' && 'check' || 'check-not-requested' }}
+    if: always() && github.event.label.name == 'ci:full'
+    needs: native
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - run: test "$RESULT" = success
+        env:
+          RESULT: ${{ needs.native.result }}
+  windows-check:
+    name: ${{ github.event.label.name == 'ci:full' && 'windows-check' || 'windows-check-not-requested' }}
+    if: always() && github.event.label.name == 'ci:full'
+    needs: native
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - run: test "$RESULT" = success
+        env:
+          RESULT: ${{ needs.native.result }}
+  macos-qualification:
+    name: ${{ github.event.label.name == 'ci:full' && 'macos-qualification' || 'macos-not-requested' }}
     if: always() && github.event.label.name == 'ci:full'
     needs: native
     runs-on: ubuntu-latest
