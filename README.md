@@ -8,3 +8,5 @@ New head must invalidate successful full CI evidence.
 A push cancels the obsolete full request.
 
 Cancel an in-flight request on the prior SHA.
+
+Fresh SHA for dispatch-only eligibility qualification.
