@@ -1,5 +1,6 @@
 name: TEST Full CI
-run-name: ${{ github.event_name == 'pull_request' && github.event.label.name == 'ci:full' && format('Full CI #{0} @{1} on {2}', github.event.pull_request.number, github.event.pull_request.head.sha, github.event.pull_request.base.sha) || 'Unrequested label' }}
+run-name: >-
+  ${{ github.event_name == 'pull_request' && github.event.label.name == 'ci:full' && format('Full CI #{0} @{1} on {2}', github.event.pull_request.number, github.event.pull_request.head.sha, github.event.pull_request.base.sha) || 'Unrequested label' }}
 on:
   pull_request:
     types: [labeled]
